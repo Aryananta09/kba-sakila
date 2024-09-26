@@ -28,9 +28,9 @@
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+        labels: ['MAY', 'JUN', 'JUL', 'AUG', 'FEB'],
         datasets: [{
-          label: "2022",
+          label: "2005",
           borderColor: gradientStrokeViolet,
           backgroundColor: gradientStrokeViolet,
           fillColor: bgColor1,
@@ -39,12 +39,12 @@
           fill: false,
           borderWidth: 1,
           fill: 'origin',
-          data: [20, 40, 15, 35, 25, 50, 30, 20, 25, 30, 40,15],
+          data: [20, 40, 15, 35, 25],
           barPercentage: 0.5,
           categoryPercentage: 0.5,
         },
         {
-          label: "2023",
+          label: "2006",
           borderColor: gradientStrokeBlue,
           backgroundColor: gradientStrokeBlue,
           hoverBackgroundColor: gradientStrokeBlue,
@@ -53,7 +53,7 @@
           fill: false,
           borderWidth: 1,
           fill: 'origin',
-          data: [40, 30, 20, 10, 50, 15, 35, 40, 40, 50, 45, 45],
+          data: [40, 30, 20, 45, 45],
           barPercentage: 0.5,
           categoryPercentage: 0.5,
         }
@@ -265,20 +265,31 @@
       plugins: [{
         afterDatasetUpdate: function (chart, args, options) {
           const chartId = chart.canvas.id;
-          var i;
           const legendId = `${chartId}-legend`;
-          const ul = document.createElement('ul');
-          for (i = 0; i < chart.data.datasets[0].data.length; i++) {
-            ul.innerHTML += `
-                <li>
-                  <span style="background-color: ${chart.data.datasets[0].legendColor[i]}"></span>
-                  ${chart.data.labels[i]}
-                </li>
-              `;
+      
+          // Pastikan untuk menghapus elemen legend sebelumnya jika ada
+          const existingLegend = document.getElementById(legendId);
+          if (existingLegend) {
+            existingLegend.innerHTML = ''; // Kosongkan sebelum menambahkan item baru
           }
+      
+          const ul = document.createElement('ul');
+          ul.style.display = 'flex'; 
+          ul.style.flexWrap = 'wrap';
+      
+          for (let i = 0; i < chart.data.datasets[0].data.length; i++) {
+            ul.innerHTML += `
+              <li style="flex-basis: calc(33.33% - 10px); margin-right: 10px; margin-bottom: 10px;">
+                <span style="background-color: ${chart.data.datasets[0].legendColor[i]}; width: 10px; height: 10px; display: inline-block;"></span>
+                ${chart.data.labels[i]}
+              </li>
+            `;
+          }
+      
           return document.getElementById(legendId).appendChild(ul);
         }
-      }]
+      }]      
+      
     });
   }
 

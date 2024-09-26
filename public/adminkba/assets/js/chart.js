@@ -30,9 +30,9 @@ $(function () {
     }]
   };
   var multiLineData = {
-    labels: ["APA", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: ["May 2005", "June 2005", "July 2005", "August 2005", "Feb 2006"],
     datasets: [{
-      label: 'Hmm',
+      label: 'Store 1',
       data: [12, 19, 3, 5, 2, 3],
       borderColor: [
         '#587ce4'
@@ -41,16 +41,7 @@ $(function () {
       fill: false
     },
     {
-      label: 'Dataset 2',
-      data: [5, 23, 7, 12, 42, 23],
-      borderColor: [
-        '#ede190'
-      ],
-      borderWidth: 2,
-      fill: false
-    },
-    {
-      label: 'Dataset 3',
+      label: 'Store 2',
       data: [15, 10, 21, 32, 12, 33],
       borderColor: [
         '#f44252'
@@ -83,7 +74,7 @@ $(function () {
   };
   var doughnutPieData = {
     datasets: [{
-      data: [20,20,20,40],
+      data: [49,51],
       backgroundColor: [
         'rgba(255, 99, 132, 0.5)',
         'rgba(54, 162, 235, 0.5)',
@@ -104,9 +95,38 @@ $(function () {
 
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: [
-      'PPP',
-      'Blue',
-      'Yellow',
+      'Australia',
+      'Canada'
+    ]
+  };
+  var doughnutData = {
+    datasets: [{
+      data: [25,25,20,18,12],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(255, 159, 64, 0.5)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+      'Susan Davis',
+      'Gina Degeneres',
+      'Mary Keitel',
+      'Matthew Carrey',
+      'Angela Witherspoon'
     ]
   };
   var doughnutPieOptions = {
@@ -320,7 +340,7 @@ $(function () {
     var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
     var doughnutChart = new Chart(doughnutChartCanvas, {
       type: 'doughnut',
-      data: doughnutPieData,
+      data: doughnutData,
       options: doughnutPieOptions
     });
   }

@@ -7,12 +7,12 @@
     <div class="navbar-menu-wrapper d-flex">
       <ul class="navbar-nav justify-content-center">
         <li class="nav-item d-none d-lg-block">
-          <a class="nav-link" id="home-link" style="color:black" href="/tes-app/public/">
+          <a class="nav-link" id="home-link" style="color:black" href="/">
             <h4>Home</h4>
           </a>
         </li>
         <li class="nav-item d-none d-lg-block">
-          <a class="nav-link" id="about-link" style="color:black" href="/tes-app/public/about">
+          <a class="nav-link" id="about-link" style="color:black" href="/about">
             <h4>About us</h4>
           </a>
         </li>

@@ -31,11 +31,11 @@
 <!-- <h1>tes</h1> -->
     <div>
           <div class="content-wrapper">
-            <div class="page-header">
+            <div class="page-header mb-3">
               <h3 class="page-title">
                 <span class="page-title-icon bg-gradient-primary text-white me-2">
                   <i class="mdi mdi-home"></i>
-                </span> Dashboard
+                </span> Dashboard Sakila
               </h3>
               <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">
@@ -52,7 +52,7 @@
                     <img src="{{ asset('adminkba/assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
                     <h4 class="font-weight-normal mb-3">Yearly Revenue <i class="mdi mdi-chart-line mdi-24px float-end"></i>
                     </h4>
-                    <h2 class="mb-5">$ XX,XXX</h2>
+                    <h2 class="mb-5">$67,406</h2>
                     <h6 class="card-text">Increased by XX%</h6>
                   </div>
                 </div>
@@ -63,7 +63,7 @@
                     <img src="{{ asset('adminkba/assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
                     <h4 class="font-weight-normal mb-3">Yearly Orders <i class="mdi mdi-bookmark-outline mdi-24px float-end"></i>
                     </h4>
-                    <h2 class="mb-5">X,XXX</h2>
+                    <h2 class="mb-5">16,044</h2>
                     <h6 class="card-text">Decreased by -%</h6>
                   </div>
                 </div>
@@ -74,7 +74,7 @@
                     <img src="{{ asset('adminkba/assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
                     <h4 class="font-weight-normal mb-3">Revenue Per Order<i class="mdi mdi-diamond mdi-24px float-end"></i>
                     </h4>
-                    <h2 class="mb-5">$X.XXX</h2>
+                    <h2 class="mb-5">$4.201</h2>
                     <h6 class="card-text">Increased by -%</h6>
                   </div>
                 </div>
@@ -152,72 +152,7 @@
     <!-- endinject -->
     <!-- Custom js for this page -->
     <script src="{{ asset('adminkba/assets/js/dashboard.js')}}"></script>
-    <script src="{{ asset('../resources/js/chart.js')}}"></script>
-    <script>
-        var multiLineData = {
-    labels: ["PPP", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    datasets: [{
-      label: 'Dataset 1',
-      data: [12, 19, 3, 5, 2, 3],
-      borderColor: [
-        '#587ce4'
-      ],
-      borderWidth: 2,
-      fill: false
-    },
-    {
-      label: 'Dataset 2',
-      data: [5, 23, 7, 12, 42, 23],
-      borderColor: [
-        '#ede190'
-      ],
-      borderWidth: 2,
-      fill: false
-    },
-    {
-      label: 'Dataset 3',
-      data: [15, 10, 21, 32, 12, 33],
-      borderColor: [
-        '#f44252'
-      ],
-      borderWidth: 2,
-      fill: false
-    }
-    ]
-  };
-  var options = {
-    scales: {
-      y: {
-        ticks: {
-          beginAtZero: true
-        }
-      }
-    },
-    legend: {
-      display: false
-    },
-    elements: {
-      line: {
-        tension: 0.5
-      },
-      point: {
-        radius: 0
-      }
-    }
-
-  };
-  if ($("#linechart-multi").length) {
-    var multiLineCanvas = $("#linechart-multi").get(0).getContext("2d");
-    if (window.linechart-multi) {
-      window.linechart-multi.destroy();
-  }  
-    var lineChart = new Chart(multiLineCanvas, {
-      type: 'line',
-      data: multiLineData,
-      options: options
-    });
-  }
-    </script>
+    <script src="{{ asset('adminkba/assets/js/chart.js')}}"></script>
     
     <!-- End custom js for this page -->
       
