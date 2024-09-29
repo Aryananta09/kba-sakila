@@ -1,3 +1,5 @@
+{{-- @dd($rentalCategory, $payments, $rentalCountry, $revenueStore, $results, $rentalActor) --}}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -52,8 +54,7 @@
                     <img src="{{ asset('adminkba/assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
                     <h4 class="font-weight-normal mb-3">Yearly Revenue <i class="mdi mdi-chart-line mdi-24px float-end"></i>
                     </h4>
-                    <h2 class="mb-5">$67,406</h2>
-                    <h6 class="card-text">Increased by XX%</h6>
+                    <h2 class="mb-5">$ {{ $results->revenue }}</h2>
                   </div>
                 </div>
               </div>
@@ -63,8 +64,7 @@
                     <img src="{{ asset('adminkba/assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
                     <h4 class="font-weight-normal mb-3">Yearly Orders <i class="mdi mdi-bookmark-outline mdi-24px float-end"></i>
                     </h4>
-                    <h2 class="mb-5">16,044</h2>
-                    <h6 class="card-text">Decreased by -%</h6>
+                    <h2 class="mb-5">{{ $results->orders }}</h2>
                   </div>
                 </div>
               </div>
@@ -74,8 +74,7 @@
                     <img src="{{ asset('adminkba/assets/images/dashboard/circle.svg')}}" class="card-img-absolute" alt="circle-image" />
                     <h4 class="font-weight-normal mb-3">Revenue Per Order<i class="mdi mdi-diamond mdi-24px float-end"></i>
                     </h4>
-                    <h2 class="mb-5">$4.201</h2>
-                    <h6 class="card-text">Increased by -%</h6>
+                    <h2 class="mb-5">$ {{ $results->revenue_per_order }}</h2>
                   </div>
                 </div>
               </div>
@@ -123,19 +122,20 @@
                       </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6 grid-margin stretch-card">
-                        <div class="card">
-                          <div class="card-body">
-                            <h4 class="card-title">Most Rental by Actor</h4>
-                            <div class="doughnutjs-wrapper d-flex justify-content-center">
-                              <canvas id="doughnutChart"></canvas>
-                            </div>
+                <div class="row d-flex justify-content-center ">
+                  <div class="col-lg-6 grid-margin stretch-card">
+                      <div class="card">
+                        <div class="card-body">
+                          <h4 class="card-title text-center">Most Rental by Actor</h4>
+                          <div class="doughnutjs-wrapper d-flex justify-content-center">
+                            <canvas id="doughnutChart"></canvas>
+                            <div id="legendContainer" ></div> <!-- Kontainer untuk legend -->
                           </div>
                         </div>
                       </div>
-                      
-                </div>
+                  </div>
+              </div>
+              
       <!-- plugins:js -->
     <script src="{{ asset('adminkba/assets/vendors/js/vendor.bundle.base.js')}}"></script>
     <!-- endinject -->
@@ -150,9 +150,19 @@
     <script src="{{ asset('adminkba/assets/js/todolist.js')}}"></script>
     <script src="{{ asset('adminkba/assets/js/jquery.cookie.js')}}"></script>
     <!-- endinject -->
+
+    <script>
+      window.chartData = {
+          results: @json($results),
+          payments: @json($payments),
+          rentalCategory: @json($rentalCategory),
+          rentalCountry: @json($rentalCountry),
+          revenueStore: @json($revenueStore),
+          rentalActor: @json($rentalActor)
+      };
+  </script>
     <!-- Custom js for this page -->
     <script src="{{ asset('adminkba/assets/js/dashboard.js')}}"></script>
-    <script src="{{ asset('adminkba/assets/js/chart.js')}}"></script>
     
     <!-- End custom js for this page -->
       

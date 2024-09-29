@@ -1,5 +1,14 @@
 (function ($) {
   'use strict';
+  const results = window.chartData.results;
+    const payments = window.chartData.payments;
+    const rentalCategory = window.chartData.rentalCategory;
+    const rentalCountry = window.chartData.rentalCountry;
+    const revenueStore = window.chartData.revenueStore;
+    const rentalActor = window.chartData.rentalActor;
+
+
+
   if ($("#visit-sale-chart").length) {
     const ctx = document.getElementById('visit-sale-chart');
 
@@ -25,138 +34,93 @@
     const bgColor2 = ["rgba(54, 215, 232, 1"];
     const bgColor3 = ["rgba(255, 191, 150, 1)"];
 
+    
+
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['MAY', 'JUN', 'JUL', 'AUG', 'FEB'],
-        datasets: [{
-          label: "2005",
-          borderColor: gradientStrokeViolet,
-          backgroundColor: gradientStrokeViolet,
-          fillColor: bgColor1,
-          hoverBackgroundColor: gradientStrokeViolet,
-          pointRadius: 0,
-          fill: false,
-          borderWidth: 1,
-          fill: 'origin',
-          data: [20, 40, 15, 35, 25],
-          barPercentage: 0.5,
-          categoryPercentage: 0.5,
-        },
-        {
-          label: "2006",
-          borderColor: gradientStrokeBlue,
-          backgroundColor: gradientStrokeBlue,
-          hoverBackgroundColor: gradientStrokeBlue,
-          fillColor: bgColor2,
-          pointRadius: 0,
-          fill: false,
-          borderWidth: 1,
-          fill: 'origin',
-          data: [40, 30, 20, 45, 45],
-          barPercentage: 0.5,
-          categoryPercentage: 0.5,
-        }
-        ]
+          labels: ['MAY', 'JUN', 'JUL', 'AUG', 'FEB'],  // Label di sumbu X
+          datasets: [{
+              label: "Revenue",
+              borderColor: gradientStrokeViolet,
+              backgroundColor: gradientStrokeViolet,
+              fillColor: bgColor1,
+              hoverBackgroundColor: gradientStrokeViolet,
+              pointRadius: 0,
+              fill: false,
+              borderWidth: 1,
+              fill: 'origin',
+              data: [
+                  payments[1].total_payment, 
+                  payments[2].total_payment, 
+                  payments[3].total_payment, 
+                  payments[4].total_payment, 
+                  payments[0].total_payment
+              ],
+              barPercentage: 0.5,
+              categoryPercentage: 0.5,
+          }]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        elements: {
-          line: {
-            tension: 0.4,
+          responsive: true,
+          maintainAspectRatio: true,
+          elements: {
+              line: {
+                  tension: 0.4,
+              },
           },
-        },
-        scales: {
-          y: {
-            display: false,
-            grid: {
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-            },
+          scales: {
+              y: {
+                  display: true,  // Menampilkan sumbu Y
+                  title: {
+                      display: true,  // Menampilkan label pada sumbu Y
+                      text: 'Revenue ($)',  // Label sumbu Y
+                      font: {
+                          size: 14
+                      }
+                  },
+                  ticks: {
+                      callback: function(value, index, values) {
+                          return '$' + value;  // Menampilkan nilai dalam bentuk dolar
+                      }
+                  },
+                  grid: {
+                      display: true,  // Menampilkan grid di sumbu Y
+                      drawOnChartArea: true,
+                      drawTicks: true,
+                  }
+              },
+              x: {
+                  display: true,
+                  grid: {
+                      display: false,  // Tidak menampilkan grid di sumbu X
+                  },
+              }
           },
-          x: {
-            display: true,
-            grid: {
-              display: false,
-            },
+          plugins: {
+              legend: {
+                  display: false,  // Tidak menampilkan legend secara default
+              }
           }
-        },
-        plugins: {
-          legend: {
-            display: false,
-          }
-        }
       },
       plugins: [{
-        afterDatasetUpdate: function (chart, args, options) {
-          const chartId = chart.canvas.id;
-          var i;
-          const legendId = `${chartId}-legend`;
-          const ul = document.createElement('ul');
-          for (i = 0; i < chart.data.datasets.length; i++) {
-            ul.innerHTML += `
-              <li>
-                <span style="background-color: ${chart.data.datasets[i].fillColor}"></span>
-                ${chart.data.datasets[i].label}
-              </li>
-            `;
-          }
-          // alert(chart.data.datasets[0].backgroundColor);
-          return document.getElementById(legendId).appendChild(ul);
+          afterDatasetUpdate: function (chart, args, options) {
+              const chartId = chart.canvas.id;
+              const legendId = `${chartId}-legend`;
+              const ul = document.createElement('ul');
+              for (let i = 0; i < chart.data.datasets.length; i++) {
+                  ul.innerHTML += `
+                      <li>
+                          <span style="background-color: ${chart.data.datasets[i].fillColor}"></span>
+                          ${chart.data.datasets[i].label}
+                      </li>
+                  `;
+              }
+              return document.getElementById(legendId).appendChild(ul);
         }
       }]
     });
   }
-
-  
-  document.addEventListener('DOMContentLoaded', function () {
-    // Cek apakah canvas tersedia
-    if (document.getElementById("linechart-multi1")) {
-        const ctx = document.getElementById('linechart-multi1').getContext('2d');
-
-        // Inisialisasi grafik multiline
-        new Chart(ctx, {
-            type: 'line', // Tipe grafik multiline
-            data: {
-                labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-                datasets: [{
-                    label: 'Store A',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    fill: true,
-                    data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120],
-                    borderWidth: 2,
-                    tension: 0.4, // Menambahkan efek kelengkungan
-                },
-                {
-                    label: 'Store B',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    fill: true,
-                    data: [20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130],
-                    borderWidth: 2,
-                    tension: 0.4, // Menambahkan efek kelengkungan
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true, // Memulai skala Y dari nol
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true, // Menampilkan legenda
-                    },
-                },
-            }
-        });
-    }
-});
 
 
   if ($("#traffic-chart").length) {
@@ -200,11 +164,64 @@
     var gradientLegendYellow = 'rgba(255, 255, 0, 1)';
 
     // Pink Gradient
-    var gradientStrokePink = graphGradient.createLinearGradient(0, 0, 0, 160);
-    gradientStrokePink.addColorStop(0, 'rgba(255, 105, 180, 1)');
-    gradientStrokePink.addColorStop(1, 'rgba(255, 20, 147, 1)');
-    var gradientLegendPink = 'rgba(255, 105, 180, 1)';
+var gradientStrokePink = graphGradient.createLinearGradient(0, 0, 0, 160);
+gradientStrokePink.addColorStop(0, 'rgba(255, 105, 180, 1)');
+gradientStrokePink.addColorStop(1, 'rgba(255, 20, 147, 1)');
+var gradientLegendPink = 'rgba(255, 105, 180, 1)';
 
+// Teal Gradient
+var gradientStrokeTeal = graphGradient.createLinearGradient(0, 0, 0, 140);
+gradientStrokeTeal.addColorStop(0, 'rgba(0, 128, 128, 1)');
+gradientStrokeTeal.addColorStop(1, 'rgba(64, 224, 208, 1)');
+var gradientLegendTeal = 'rgba(0, 128, 128, 1)';
+
+// Brown Gradient
+var gradientStrokeBrown = graphGradient.createLinearGradient(0, 0, 0, 200);
+gradientStrokeBrown.addColorStop(0, 'rgba(139, 69, 19, 1)');
+gradientStrokeBrown.addColorStop(1, 'rgba(210, 105, 30, 1)');
+var gradientLegendBrown = 'rgba(139, 69, 19, 1)';
+
+// Cyan Gradient
+var gradientStrokeCyan = graphGradient.createLinearGradient(0, 0, 0, 220);
+gradientStrokeCyan.addColorStop(0, 'rgba(0, 255, 255, 1)');
+gradientStrokeCyan.addColorStop(1, 'rgba(0, 206, 209, 1)');
+var gradientLegendCyan = 'rgba(0, 255, 255, 1)';
+
+// Lime Gradient
+var gradientStrokeLime = graphGradient.createLinearGradient(0, 0, 0, 190);
+gradientStrokeLime.addColorStop(0, 'rgba(50, 205, 50, 1)');
+gradientStrokeLime.addColorStop(1, 'rgba(124, 252, 0, 1)');
+var gradientLegendLime = 'rgba(50, 205, 50, 1)';
+
+// Indigo Gradient
+var gradientStrokeIndigo = graphGradient.createLinearGradient(0, 0, 0, 130);
+gradientStrokeIndigo.addColorStop(0, 'rgba(75, 0, 130, 1)');
+gradientStrokeIndigo.addColorStop(1, 'rgba(138, 43, 226, 1)');
+var gradientLegendIndigo = 'rgba(75, 0, 130, 1)';
+
+// Silver Gradient
+var gradientStrokeSilver = graphGradient.createLinearGradient(0, 0, 0, 240);
+gradientStrokeSilver.addColorStop(0, 'rgba(192, 192, 192, 1)');
+gradientStrokeSilver.addColorStop(1, 'rgba(169, 169, 169, 1)');
+var gradientLegendSilver = 'rgba(192, 192, 192, 1)';
+
+// Gold Gradient
+var gradientStrokeGold = graphGradient.createLinearGradient(0, 0, 0, 250);
+gradientStrokeGold.addColorStop(0, 'rgba(255, 215, 0, 1)');
+gradientStrokeGold.addColorStop(1, 'rgba(218, 165, 32, 1)');
+var gradientLegendGold = 'rgba(255, 215, 0, 1)';
+
+// Magenta Gradient
+var gradientStrokeMagenta = graphGradient.createLinearGradient(0, 0, 0, 270);
+gradientStrokeMagenta.addColorStop(0, 'rgba(255, 0, 255, 1)');
+gradientStrokeMagenta.addColorStop(1, 'rgba(199, 21, 133, 1)');
+var gradientLegendMagenta = 'rgba(255, 0, 255, 1)';
+
+// New Gradient: Turquoise Gradient
+var gradientStrokeTurquoise = graphGradient.createLinearGradient(0, 0, 0, 180);
+gradientStrokeTurquoise.addColorStop(0, 'rgba(64, 224, 208, 1)');
+gradientStrokeTurquoise.addColorStop(1, 'rgba(72, 209, 204, 1)');
+var gradientLegendTurquoise = 'rgba(64, 224, 208, 1)';
     
 
     // const bgColor1 = ["rgba(54, 215, 232, 1)"];
@@ -214,10 +231,10 @@
     new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: ['Action', 'Animation', 'Documentary','Drama', 'Family', 'Sci-Fi', 'Sports' ],
+        labels: rentalCategory.map(category => category.category_name),
         datasets: [{
-          data: [ 14.32,15.02,13.52,13.65,14.12,14.18, 15.19],
-          backgroundColor: [gradientStrokeBlue, gradientStrokeGreen, gradientStrokeRed, gradientStrokePink, gradientStrokePurple, gradientStrokeOrange, gradientLegendYellow],
+          data: rentalCategory.map(category => category.percentage),
+          backgroundColor: [gradientStrokeBlue, gradientStrokeGreen, gradientStrokeRed, gradientStrokePink, gradientStrokePurple, gradientStrokeOrange, gradientStrokeYellow, gradientStrokeBrown, gradientStrokeTeal, gradientStrokeCyan, gradientStrokeLime, gradientStrokeIndigo,gradientStrokeSilver, gradientStrokeGold, gradientStrokeMagenta, gradientStrokeTurquoise],
           hoverBackgroundColor: [
             gradientStrokeBlue,
             gradientStrokeGreen,
@@ -225,7 +242,16 @@
             gradientStrokePink, 
             gradientStrokePurple, 
             gradientStrokeOrange, 
-            gradientLegendYellow
+            gradientStrokeYellow,
+            gradientStrokeBrown, 
+            gradientStrokeTeal, 
+            gradientStrokeCyan, 
+            gradientStrokeLime, 
+            gradientStrokeIndigo,
+            gradientStrokeSilver, 
+            gradientStrokeGold, 
+            gradientStrokeMagenta, 
+            gradientStrokeTurquoise
           ],
           borderColor: [
             gradientStrokeBlue,
@@ -234,7 +260,16 @@
             gradientStrokePink, 
             gradientStrokePurple, 
             gradientStrokeOrange, 
-            gradientLegendYellow
+            gradientStrokeYellow,
+            gradientStrokeBrown, 
+            gradientStrokeTeal, 
+            gradientStrokeCyan, 
+            gradientStrokeLime, 
+            gradientStrokeIndigo,
+            gradientStrokeSilver, 
+            gradientStrokeGold, 
+            gradientStrokeMagenta, 
+            gradientStrokeTurquoise
           ],
           legendColor: [
             gradientLegendBlue,
@@ -243,7 +278,16 @@
             gradientLegendPink,
             gradientLegendPurple, 
             gradientLegendOrange,
-            gradientLegendYellow
+            gradientLegendYellow,
+            gradientLegendBrown, 
+            gradientLegendTeal, 
+            gradientLegendCyan, 
+            gradientLegendLime, 
+            gradientLegendIndigo,
+            gradientLegendSilver, 
+            gradientLegendGold, 
+            gradientLegendMagenta, 
+            gradientLegendTurquoise
           ]
         }]
       },
@@ -293,333 +337,196 @@
     });
   }
 
-  if ($("#actor-chart").length) {
-    const ctx = document.getElementById('actor-chart');
-    var graphGradient = ctx.getContext('2d');
-
-    // Blue Gradient
-    var gradientStrokeBlue = graphGradient.createLinearGradient(0, 0, 0, 181);
-    gradientStrokeBlue.addColorStop(0, 'rgba(54, 215, 232, 1)');
-    gradientStrokeBlue.addColorStop(1, 'rgba(177, 148, 250, 1)');
-    var gradientLegendBlue = 'rgba(54, 215, 232, 1)';
-
-    // Red Gradient
-    var gradientStrokeRed = graphGradient.createLinearGradient(0, 0, 0, 50);
-    gradientStrokeRed.addColorStop(0, 'rgba(255, 191, 150, 1)');
-    gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
-    var gradientLegendRed = 'rgba(254, 112, 150, 1)';
-
-    // Green Gradient
-    var gradientStrokeGreen = graphGradient.createLinearGradient(0, 0, 0, 300);
-    gradientStrokeGreen.addColorStop(0, 'rgba(6, 185, 157, 1)');
-    gradientStrokeGreen.addColorStop(1, 'rgba(132, 217, 210, 1)');
-    var gradientLegendGreen = 'rgba(6, 185, 157, 1)';
-
-    // Purple Gradient
-    var gradientStrokePurple = graphGradient.createLinearGradient(0, 0, 0, 100);
-    gradientStrokePurple.addColorStop(0, 'rgba(200, 75, 250, 1)');
-    gradientStrokePurple.addColorStop(1, 'rgba(150, 50, 250, 1)');
-    var gradientLegendPurple = 'rgba(200, 75, 250, 1)';
-
-    // Orange Gradient
-    var gradientStrokeOrange = graphGradient.createLinearGradient(0, 0, 0, 120);
-    gradientStrokeOrange.addColorStop(0, 'rgba(255, 165, 0, 1)');
-    gradientStrokeOrange.addColorStop(1, 'rgba(255, 140, 0, 1)');
-    var gradientLegendOrange = 'rgba(255, 165, 0, 1)';
-
-    // Yellow Gradient
-    var gradientStrokeYellow = graphGradient.createLinearGradient(0, 0, 0, 80);
-    gradientStrokeYellow.addColorStop(0, 'rgba(255, 255, 0, 1)');
-    gradientStrokeYellow.addColorStop(1, 'rgba(255, 215, 0, 1)');
-    var gradientLegendYellow = 'rgba(255, 255, 0, 1)';
-
-    // Pink Gradient
-    var gradientStrokePink = graphGradient.createLinearGradient(0, 0, 0, 160);
-    gradientStrokePink.addColorStop(0, 'rgba(255, 105, 180, 1)');
-    gradientStrokePink.addColorStop(1, 'rgba(255, 20, 147, 1)');
-    var gradientLegendPink = 'rgba(255, 105, 180, 1)';
-
-    
-
-    // const bgColor1 = ["rgba(54, 215, 232, 1)"];
-    // const bgColor2 = ["rgba(255, 191, 150, 1"];
-    // const bgColor3 = ["rgba(6, 185, 157, 1)"];
-
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Action', 'Animation', 'Documentary','Drama', 'Family', 'Sci-Fi', 'Sports' ],
-        datasets: [{
-          data: [ 14.32,15.02,13.52,13.65,14.12,14.18, 15.19],
-          backgroundColor: [gradientStrokeBlue, gradientStrokeGreen, gradientStrokeRed, gradientStrokePink, gradientStrokePurple, gradientStrokeOrange, gradientLegendYellow],
-          hoverBackgroundColor: [
-            gradientStrokeBlue,
-            gradientStrokeGreen,
-            gradientStrokeRed,
-            gradientStrokePink, 
-            gradientStrokePurple, 
-            gradientStrokeOrange, 
-            gradientLegendYellow
-          ],
-          borderColor: [
-            gradientStrokeBlue,
-            gradientStrokeGreen,
-            gradientStrokeRed,
-            gradientStrokePink, 
-            gradientStrokePurple, 
-            gradientStrokeOrange, 
-            gradientLegendYellow
-          ],
-          legendColor: [
-            gradientLegendBlue,
-            gradientLegendGreen,
-            gradientLegendRed,
-            gradientLegendPink,
-            gradientLegendPurple, 
-            gradientLegendOrange,
-            gradientLegendYellow
-          ]
-        }]
+  // Data untuk chart
+var multiLineData = {
+  labels: ["May 2005", "June 2005", "July 2005", "August 2005", "Feb 2006"],
+  datasets: [
+      {
+          label: 'Store 1',
+          data: [revenueStore[1].total_amount, revenueStore[2].total_amount, revenueStore[3].total_amount, revenueStore[4].total_amount, revenueStore[0].total_amount],
+          borderColor: '#587ce4',
+          borderWidth: 2,
+          fill: false
       },
-      options: {
-        cutout: 50,
-        animationEasing: "easeOutBounce",
-        animateRotate: true,
-        animateScale: false,
-        responsive: true,
-        maintainAspectRatio: true,
-        showScale: true,
-        legend: false,
-        plugins: {
-          legend: {
-            display: false,
+      {
+          label: 'Store 2',
+          data: [revenueStore[6].total_amount,revenueStore[7].total_amount,revenueStore[8].total_amount,revenueStore[9].total_amount,revenueStore[5].total_amount],
+          borderColor: '#f44252',
+          borderWidth: 2,
+          fill: false
+      }
+  ]
+};
+
+// Opsi untuk chart
+var options = {
+  scales: {
+      y: {
+          beginAtZero: true,
+          ticks: {
+              stepSize: 5
           }
-        }
+      }
+  },
+  plugins: {
+      legend: {
+          display: true // Set to true to show the legend
+      }
+  },
+  elements: {
+      line: {
+          tension: 0.5 // Set tension to create smooth lines
       },
-      plugins: [{
-        afterDatasetUpdate: function (chart, args, options) {
-          const chartId = chart.canvas.id;
-          var i;
-          const legendId = `${chartId}-legend`;
-          const ul = document.createElement('ul');
-          for (i = 0; i < chart.data.datasets[0].data.length; i++) {
-            ul.innerHTML += `
-                <li>
-                  <span style="background-color: ${chart.data.datasets[0].legendColor[i]}"></span>
-                  ${chart.data.labels[i]}
-                </li>
-              `;
-          }
-          return document.getElementById(legendId).appendChild(ul);
-        }
-      }]
-    });
+      point: {
+          radius: 4 // Radius of data points
+      }
   }
+};
 
-  if ($("#barChart").length) {
-    var barChartCanvas = $("#barChart").get(0).getContext("2d");
-    // This will get the first returned node in the jQuery collection.
-    var barChart = new Chart(barChartCanvas, {
-      type: 'bar',
-      data: data,
-      options: options
-    });
-  }
+// Inisialisasi Chart jika elemen ada
+if ($("#linechart-multi").length) {
+  var multiLineCanvas = $("#linechart-multi").get(0).getContext("2d");
 
-  if ($("#lineChart").length) {
-    var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
-    var lineChart = new Chart(lineChartCanvas, {
-      type: 'line',
-      data: data,
-      options: options
-    });
-  }
-
-  if ($("#linechart-multi1").length) {
-    var multiLineCanvas = $("#linechart-multi1").get(0).getContext("2d");
-    var lineChart = new Chart(multiLineCanvas, {
+  // Membuat line chart dengan Chart.js
+  var lineChart = new Chart(multiLineCanvas, {
       type: 'line',
       data: multiLineData,
       options: options
-    });
-  }
+  });
+}
 
-  if ($("#areachart-multi").length) {
-    var multiAreaCanvas = $("#areachart-multi1").get(0).getContext("2d");
-    var multiAreaChart = new Chart(multiAreaCanvas, {
-      type: 'line',
-      data: multiAreaData,
-      options: multiAreaOptions
-    });
-  }
+//Data Donut
+var doughnutPieData = {
+  datasets: [{
+    data: rentalCountry.map(country =>country.percentage),
+    backgroundColor: [
+      'rgba(255, 99, 132, 0.5)',
+      'rgba(54, 162, 235, 0.5)',
+      'rgba(255, 206, 86, 0.5)',
+      'rgba(75, 192, 192, 0.5)',
+      'rgba(153, 102, 255, 0.5)',
+      'rgba(255, 159, 64, 0.5)'
+    ],
+    borderColor: [
+      'rgba(255,99,132,1)',
+      'rgba(54, 162, 235, 1)',
+      'rgba(255, 206, 86, 1)',
+      'rgba(75, 192, 192, 1)',
+      'rgba(153, 102, 255, 1)',
+      'rgba(255, 159, 64, 1)'
+    ],
+  }],
 
-  if ($("#doughnutChart1").length) {
-    var doughnutChartCanvas = $("#doughnutChart1").get(0).getContext("2d");
-    var doughnutChart = new Chart(doughnutChartCanvas, {
-      type: 'doughnut',
-      data: doughnutPieData,
-      options: doughnutPieOptions
-    });
-  }
+  // These labels appear in the legend and in the tooltips when hovering different arcs
+  labels: [
+    'Australia',
+    'Canada'
+  ]
+};
+var doughnutData = {
+  datasets: [{
+    data: rentalActor.map(Actor => Actor.total_rental),
+    backgroundColor: [
+      'rgba(255, 99, 132, 0.5)',    // Merah muda
+      'rgba(54, 162, 235, 0.5)',    // Biru
+      'rgba(255, 206, 86, 0.5)',    // Kuning
+      'rgba(75, 192, 192, 0.5)',    // Hijau pudar
+      'rgba(153, 102, 255, 0.5)',   // Ungu
+      'rgba(255, 159, 64, 0.5)',    // Oranye
+      'rgba(199, 199, 199, 0.5)',   // Abu-abu muda
+      'rgba(255, 99, 255, 0.5)',    // Pink terang
+      'rgba(132, 255, 99, 0.5)',    // Hijau terang
+      'rgba(99, 132, 255, 0.5)'     // Biru terang
+    ],
+    
+    borderColor: [
+      'rgba(255, 99, 132, 1)',    // Merah muda
+      'rgba(54, 162, 235, 1)',    // Biru
+      'rgba(255, 206, 86, 1)',    // Kuning
+      'rgba(75, 192, 192, 1)',    // Hijau pudar
+      'rgba(153, 102, 255, 1)',   // Ungu
+      'rgba(255, 159, 64, 1)',    // Oranye
+      'rgba(199, 199, 199, 1)',   // Abu-abu muda
+      'rgba(255, 99, 255, 1)',    // Pink terang
+      'rgba(132, 255, 99, 1)',    // Hijau terang
+      'rgba(99, 132, 255, 1)'     // Biru terang
+    ],    
+  }],
 
-  if ($("#pieChart1").length) {
-    var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-    var pieChart = new Chart(pieChartCanvas, {
-      type: 'pie',
-      data: doughnutPieData,
-      options: doughnutPieOptions
-    });
+  // These labels appear in the legend and in the tooltips when hovering different arcs
+  labels: rentalActor.map(Actor => Actor.full_name)
+};
+var pieOptions = {
+  responsive: true,
+  animation: {
+    animateScale: true,
+    animateRotate: true
   }
-
-  var data = {
-    labels: ["May 2005", "June 2005", "July 2005", "August 2005", "Feb 2006"],
-    datasets: [{
-      label: '# of Votes',
-      data: [8, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1,
-      fill: false
-    }]
-  };
-  var multiLineData = {
-    labels: ["APA", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    datasets: [{
-      label: 'Dataset 1',
-      data: [12, 19, 3, 5, 2, 3],
-      borderColor: [
-        '#587ce4'
-      ],
-      borderWidth: 2,
-      fill: false
+};
+var doughnutPieOptions = {
+  responsive: true,
+  animation: {
+    animateScale: true,
+    animateRotate: true
+  },
+  cutoutPercentage: 60,  // Adjust the size of the doughnut's center hole for more space
+  plugins: {
+    legend: {
+      display: false, // Menonaktifkan legend dari chart.js
     },
-    {
-      label: 'Dataset 2',
-      data: [5, 23, 7, 12, 42, 23],
-      borderColor: [
-        '#ede190'
-      ],
-      borderWidth: 2,
-      fill: false
-    },
-    {
-      label: 'Dataset 3',
-      data: [15, 10, 21, 32, 12, 33],
-      borderColor: [
-        '#f44252'
-      ],
-      borderWidth: 2,
-      fill: false
-    }
-    ]
-  };
-  var options = {
-    scales: {
-      y: {
-        ticks: {
-          beginAtZero: true
+    tooltip: {
+      enabled: true, // Tooltip tetap diaktifkan
+      callbacks: {
+        label: function(tooltipItem) {
+          var currentValue = tooltipItem.raw;
+          return tooltipItem.label + ': ' + currentValue; // Menampilkan nilai aktual
         }
       }
-    },
-    legend: {
-      display: false
-    },
-    elements: {
-      line: {
-        tension: 0.5
-      },
-      point: {
-        radius: 0
-      }
     }
-
-  };
-  var doughnutPieData = {
-    datasets: [{
-      data: [20,20,20,40],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.5)',
-        'rgba(54, 162, 235, 0.5)',
-        'rgba(255, 206, 86, 0.5)',
-        'rgba(75, 192, 192, 0.5)',
-        'rgba(153, 102, 255, 0.5)',
-        'rgba(255, 159, 64, 0.5)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-    }],
-
-    // These labels appear in the legend and in the tooltips when hovering different arcs
-    labels: [
-      'PPP',
-      'Blue',
-      'Yellow',
-    ]
-  };
-  var doughnutPieOptions = {
-    responsive: true,
-    animation: {
-      animateScale: true,
-      animateRotate: true
-    }
-  };
-
-
-
-  if ($("#inline-datepicker").length) {
-    $('#inline-datepicker').datepicker({
-      enableOnReadonly: true,
-      todayHighlight: true,
-    });
   }
-  if ($.cookie('purple-pro-banner') != "true") {
-    document.querySelector('#proBanner').classList.add('d-flex');
-    document.querySelector('.navbar').classList.remove('fixed-top');
-  } else {
-    document.querySelector('#proBanner').classList.add('d-none');
-    document.querySelector('.navbar').classList.add('fixed-top');
-  }
+};
 
-  if ($(".navbar").hasClass("fixed-top")) {
-    document.querySelector('.page-body-wrapper').classList.remove('pt-0');
-    document.querySelector('.navbar').classList.remove('pt-5');
-  } else {
-    document.querySelector('.page-body-wrapper').classList.add('pt-0');
-    document.querySelector('.navbar').classList.add('pt-5');
-    document.querySelector('.navbar').classList.add('mt-3');
-
-  }
-  document.querySelector('#bannerClose').addEventListener('click', function () {
-    document.querySelector('#proBanner').classList.add('d-none');
-    document.querySelector('#proBanner').classList.remove('d-flex');
-    document.querySelector('.navbar').classList.remove('pt-5');
-    document.querySelector('.navbar').classList.add('fixed-top');
-    document.querySelector('.page-body-wrapper').classList.add('proBanner-padding-top');
-    document.querySelector('.navbar').classList.remove('mt-3');
-    var date = new Date();
-    date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-    $.cookie('purple-pro-banner', "true", {
-      expires: date
-    });
+if ($("#doughnutChart").length) {
+  var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
+  var doughnutChart = new Chart(doughnutChartCanvas, {
+    type: 'doughnut',
+    data: doughnutData,
+    options: doughnutPieOptions
   });
+
+  // Menambahkan inline CSS untuk chart container
+  $('#chartContainer').css({
+    'display': 'flex',
+    'align-items': 'center' // Align secara vertikal agar tengah
+  });
+
+    // Generate custom legend
+    var legendContainer = $('#legendContainer');
+    legendContainer.css({
+      'margin-left': '50px', // Jarak antara chart dan legend
+      'display': 'grid',     // Menggunakan grid layout
+      'grid-template-columns': 'repeat(2, 1fr)', // 2 kolom yang rata
+      'gap': '10px'          // Jarak antar elemen di grid
+    });
+  
+    var legendHtml = '';
+    doughnutData.labels.forEach(function(label, index) {
+      legendHtml += `<div style="display: flex; align-items: center;">
+                       <span style="display:inline-block; width: 10px; height: 10px; background-color: ${doughnutData.datasets[0].backgroundColor[index]}; margin-right: 5px;"></span>
+                       ${label}
+                     </div>`;
+    });
+    legendContainer.html(legendHtml);// Menambahkan legend kustom ke dalam kontainer
+}
+
+
+if ($("#pieChart").length) {
+  var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+  var pieChart = new Chart(pieChartCanvas, {
+    type: 'pie',
+    data: doughnutPieData,
+    options: pieOptions
+  });
+}
+
 })(jQuery);

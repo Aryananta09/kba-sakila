@@ -93,6 +93,11 @@ body {
     transform: scale(1.05);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
+#legendContainer {
+    margin-left: 100px;
+    padding-left: 80px; /* Jarak antara chart dan legend */
+    /* Anda juga bisa menambahkan padding atau margin pada elemen di dalam legendContainer jika diperlukan */
+  }
 
 footer {
     background-color: #333;
