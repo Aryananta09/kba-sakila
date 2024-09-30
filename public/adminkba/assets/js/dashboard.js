@@ -9,219 +9,208 @@
 
 
 
-  if ($("#visit-sale-chart").length) {
-    const ctx = document.getElementById('visit-sale-chart');
-
-    var graphGradient1 = document.getElementById('visit-sale-chart').getContext("2d");
-    var graphGradient2 = document.getElementById('visit-sale-chart').getContext("2d");
-    var graphGradient3 = document.getElementById('visit-sale-chart').getContext("2d");
-
-    var gradientStrokeViolet = graphGradient1.createLinearGradient(0, 0, 0, 181);
-    gradientStrokeViolet.addColorStop(0, 'rgba(218, 140, 255, 1)');
-    gradientStrokeViolet.addColorStop(1, 'rgba(154, 85, 255, 1)');
-    var gradientLegendViolet = 'linear-gradient(to right, rgba(218, 140, 255, 1), rgba(154, 85, 255, 1))';
-
-    var gradientStrokeBlue = graphGradient2.createLinearGradient(0, 0, 0, 360);
-    gradientStrokeBlue.addColorStop(0, 'rgba(54, 215, 232, 1)');
-    gradientStrokeBlue.addColorStop(1, 'rgba(177, 148, 250, 1)');
-    var gradientLegendBlue = 'linear-gradient(to right, rgba(54, 215, 232, 1), rgba(177, 148, 250, 1))';
-
-    var gradientStrokeRed = graphGradient3.createLinearGradient(0, 0, 0, 300);
-    gradientStrokeRed.addColorStop(0, 'rgba(255, 191, 150, 1)');
-    gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
-    var gradientLegendRed = 'linear-gradient(to right, rgba(255, 191, 150, 1), rgba(254, 112, 150, 1))';
-    const bgColor1 = ["rgba(218, 140, 255, 1)"];
-    const bgColor2 = ["rgba(54, 215, 232, 1"];
-    const bgColor3 = ["rgba(255, 191, 150, 1)"];
-
-    
-
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: ['MAY', 'JUN', 'JUL', 'AUG', 'FEB'],  // Label di sumbu X
-          datasets: [{
-              label: "Revenue",
-              borderColor: gradientStrokeViolet,
-              backgroundColor: gradientStrokeViolet,
-              fillColor: bgColor1,
-              hoverBackgroundColor: gradientStrokeViolet,
-              pointRadius: 0,
-              fill: false,
-              borderWidth: 1,
-              fill: 'origin',
-              data: [
-                  payments[1].total_payment, 
-                  payments[2].total_payment, 
-                  payments[3].total_payment, 
-                  payments[4].total_payment, 
-                  payments[0].total_payment
-              ],
-              barPercentage: 0.5,
-              categoryPercentage: 0.5,
-          }]
-      },
-      options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          elements: {
-              line: {
-                  tension: 0.4,
-              },
+    if ($("#visit-sale-chart").length) {
+      const ctx = document.getElementById('visit-sale-chart');
+  
+      var graphGradient1 = document.getElementById('visit-sale-chart').getContext("2d");
+  
+      // Gradient ungu (violet)
+      var gradientStrokeViolet = graphGradient1.createLinearGradient(0, 0, 0, 181);
+      gradientStrokeViolet.addColorStop(0, 'rgba(218, 140, 255, 1)');
+      gradientStrokeViolet.addColorStop(1, 'rgba(154, 85, 255, 1)');
+  
+      // Gradient biru
+      var gradientStrokeBlue = graphGradient1.createLinearGradient(0, 0, 0, 360);
+      gradientStrokeBlue.addColorStop(0, 'rgba(54, 215, 232, 1)');
+      gradientStrokeBlue.addColorStop(1, 'rgba(177, 148, 250, 1)');
+  
+      // Gradient merah
+      var gradientStrokeRed = graphGradient1.createLinearGradient(0, 0, 0, 300);
+      gradientStrokeRed.addColorStop(0, 'rgba(255, 191, 150, 1)');
+      gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
+  
+      // Gradient hijau
+      var gradientStrokeGreen = graphGradient1.createLinearGradient(0, 0, 0, 300);
+      gradientStrokeGreen.addColorStop(0, 'rgba(0, 230, 64, 1)');
+      gradientStrokeGreen.addColorStop(1, 'rgba(0, 177, 64, 1)');
+  
+      // Array warna background untuk setiap bar
+      const bgColors = [
+          gradientStrokeViolet,  // Warna ungu untuk bar pertama
+          gradientStrokeGreen,    // Warna biru untuk bar kedua
+          gradientStrokeGreen,     // Warna merah untuk bar ketiga
+          gradientStrokeRed,   // Warna hijau untuk bar keempat
+          gradientStrokeRed   // Warna ungu lagi untuk bar kelima
+      ];
+  
+      new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: ['MAY', 'JUN', 'JUL', 'AUG', 'FEB'],  // Label di sumbu X
+              datasets: [{
+                  label: "Revenue Dasar",
+                  backgroundColor: bgColors,  // Array dengan warna background
+                  hoverBackgroundColor: bgColors,  // Warna ketika di-hover
+                  data: [
+                      payments[1].total_payment, 
+                      payments[2].total_payment, 
+                      payments[3].total_payment, 
+                      payments[4].total_payment, 
+                      payments[0].total_payment
+                  ],
+                  borderWidth: 1,
+                  barPercentage: 0.5,
+                  categoryPercentage: 0.5,
+              }]
           },
-          scales: {
-              y: {
-                  display: true,  // Menampilkan sumbu Y
-                  title: {
-                      display: true,  // Menampilkan label pada sumbu Y
-                      text: 'Revenue ($)',  // Label sumbu Y
-                      font: {
-                          size: 14
+          options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              scales: {
+                  y: {
+                      display: true,
+                      title: {
+                          display: true,
+                          text: 'Revenue ($)',
+                          font: {
+                              size: 14
+                          }
+                      },
+                      ticks: {
+                          callback: function(value) {
+                              return '$' + value;
+                          }
+                      },
+                      grid: {
+                          display: true,
                       }
                   },
-                  ticks: {
-                      callback: function(value, index, values) {
-                          return '$' + value;  // Menampilkan nilai dalam bentuk dolar
+                  x: {
+                      display: true,
+                      grid: {
+                          display: false,
                       }
-                  },
-                  grid: {
-                      display: true,  // Menampilkan grid di sumbu Y
-                      drawOnChartArea: true,
-                      drawTicks: true,
                   }
               },
-              x: {
-                  display: true,
-                  grid: {
-                      display: false,  // Tidak menampilkan grid di sumbu X
-                  },
-              }
-          },
-          plugins: {
-              legend: {
-                  display: false,  // Tidak menampilkan legend secara default
-              }
+              plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        generateLabels: function(chart) {
+                            var original = Chart.defaults.plugins.legend.labels.generateLabels(chart); // Mengambil label asli
+                            
+                            // Menambahkan label custom baru tanpa diagram baru
+                            original.push({
+                                text: 'Profit Naik >30%',  // Label baru
+                                fillStyle: gradientStrokeGreen,  // Warna yang berbeda
+                                strokeStyle: gradientStrokeGreen,  // Warna outline jika diinginkan
+                                hidden: false,  // Untuk memastikan label ditampilkan
+                            });
+                            original.push({
+                              text: 'Profit Turun',  // Label baru
+                              fillStyle: gradientStrokeRed,  // Warna yang berbeda
+                              strokeStyle: gradientStrokeRed,  // Warna outline jika diinginkan
+                              hidden: false,  // Untuk memastikan label ditampilkan
+                          });
+    
+                            return original;  // Mengembalikan array legend
+                        }
+                    }
+                }
+            }
           }
-      },
-      plugins: [{
-          afterDatasetUpdate: function (chart, args, options) {
-              const chartId = chart.canvas.id;
-              const legendId = `${chartId}-legend`;
-              const ul = document.createElement('ul');
-              for (let i = 0; i < chart.data.datasets.length; i++) {
-                  ul.innerHTML += `
-                      <li>
-                          <span style="background-color: ${chart.data.datasets[i].fillColor}"></span>
-                          ${chart.data.datasets[i].label}
-                      </li>
-                  `;
-              }
-              return document.getElementById(legendId).appendChild(ul);
-        }
-      }]
-    });
+      });
   }
-
+  
 
   if ($("#traffic-chart").length) {
     const ctx = document.getElementById('traffic-chart');
     var graphGradient = ctx.getContext('2d');
 
-    // Blue Gradient
-    var gradientStrokeBlue = graphGradient.createLinearGradient(0, 0, 0, 181);
-    gradientStrokeBlue.addColorStop(0, 'rgba(54, 215, 232, 1)');
-    gradientStrokeBlue.addColorStop(1, 'rgba(177, 148, 250, 1)');
-    var gradientLegendBlue = 'rgba(54, 215, 232, 1)';
+// Gradient Hijau-Biru (8 warna)
+// Gradient Hijau (8 warna)
+var gradientStrokeGreen1 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeGreen1.addColorStop(0, 'rgba(204, 255, 204, 1)');   // Hijau sangat terang
+gradientStrokeGreen1.addColorStop(1, 'rgba(179, 255, 179, 1)');   // Hijau pucat
+var gradientLegendGreen1 = 'rgba(204, 255, 204, 1)';
 
-    // Red Gradient
-    var gradientStrokeRed = graphGradient.createLinearGradient(0, 0, 0, 50);
-    gradientStrokeRed.addColorStop(0, 'rgba(255, 191, 150, 1)');
-    gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
-    var gradientLegendRed = 'rgba(254, 112, 150, 1)';
+var gradientStrokeGreen2 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeGreen2.addColorStop(0, 'rgba(128, 255, 128, 1)');   // Hijau muda
+gradientStrokeGreen2.addColorStop(1, 'rgba(102, 255, 102, 1)');   // Hijau cerah
+var gradientLegendGreen2 ='rgba(128, 255, 128, 1)';
 
-    // Green Gradient
-    var gradientStrokeGreen = graphGradient.createLinearGradient(0, 0, 0, 300);
-    gradientStrokeGreen.addColorStop(0, 'rgba(6, 185, 157, 1)');
-    gradientStrokeGreen.addColorStop(1, 'rgba(132, 217, 210, 1)');
-    var gradientLegendGreen = 'rgba(6, 185, 157, 1)';
+var gradientStrokeGreen3 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeGreen3.addColorStop(0, 'rgba(51, 255, 51, 1)');     // Hijau terang
+gradientStrokeGreen3.addColorStop(1, 'rgba(0, 255, 0, 1)');       // Hijau neon
+var gradientLegendGreen3 = 'rgba(51, 255, 51, 1)';
 
-    // Purple Gradient
-    var gradientStrokePurple = graphGradient.createLinearGradient(0, 0, 0, 100);
-    gradientStrokePurple.addColorStop(0, 'rgba(200, 75, 250, 1)');
-    gradientStrokePurple.addColorStop(1, 'rgba(150, 50, 250, 1)');
-    var gradientLegendPurple = 'rgba(200, 75, 250, 1)';
+var gradientStrokeGreen4 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeGreen4.addColorStop(0, 'rgba(0, 230, 64, 1)');      // Hijau intens
+gradientStrokeGreen4.addColorStop(1, 'rgba(0, 204, 51, 1)');      // Hijau normal
+var gradientLegendGreen4 = 'rgba(0, 230, 64, 1)';
 
-    // Orange Gradient
-    var gradientStrokeOrange = graphGradient.createLinearGradient(0, 0, 0, 120);
-    gradientStrokeOrange.addColorStop(0, 'rgba(255, 165, 0, 1)');
-    gradientStrokeOrange.addColorStop(1, 'rgba(255, 140, 0, 1)');
-    var gradientLegendOrange = 'rgba(255, 165, 0, 1)';
+var gradientStrokeGreen5 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeGreen5.addColorStop(0, 'rgba(0, 204, 0, 1)');       // Hijau murni
+gradientStrokeGreen5.addColorStop(1, 'rgba(0, 179, 0, 1)');       // Hijau pekat
+var gradientLegendGreen5 = 'rgba(0, 204, 0, 1)';
 
-    // Yellow Gradient
-    var gradientStrokeYellow = graphGradient.createLinearGradient(0, 0, 0, 80);
-    gradientStrokeYellow.addColorStop(0, 'rgba(255, 255, 0, 1)');
-    gradientStrokeYellow.addColorStop(1, 'rgba(255, 215, 0, 1)');
-    var gradientLegendYellow = 'rgba(255, 255, 0, 1)';
+var gradientStrokeGreen6 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeGreen6.addColorStop(0, 'rgba(0, 153, 51, 1)');      // Hijau daun
+gradientStrokeGreen6.addColorStop(1, 'rgba(0, 128, 43, 1)');      // Hijau hutan
+var gradientLegendGreen6 = 'rgba(0, 153, 51, 1)';
 
-    // Pink Gradient
-var gradientStrokePink = graphGradient.createLinearGradient(0, 0, 0, 160);
-gradientStrokePink.addColorStop(0, 'rgba(255, 105, 180, 1)');
-gradientStrokePink.addColorStop(1, 'rgba(255, 20, 147, 1)');
-var gradientLegendPink = 'rgba(255, 105, 180, 1)';
+var gradientStrokeGreen7 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeGreen7.addColorStop(0, 'rgba(0, 102, 34, 1)');      // Hijau gelap
+gradientStrokeGreen7.addColorStop(1, 'rgba(0, 77, 26, 1)');       // Hijau zaitun
+var gradientLegendGreen7 ='rgba(0, 102, 34, 1)';
 
-// Teal Gradient
-var gradientStrokeTeal = graphGradient.createLinearGradient(0, 0, 0, 140);
-gradientStrokeTeal.addColorStop(0, 'rgba(0, 128, 128, 1)');
-gradientStrokeTeal.addColorStop(1, 'rgba(64, 224, 208, 1)');
-var gradientLegendTeal = 'rgba(0, 128, 128, 1)';
+var gradientStrokeGreen8 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeGreen8.addColorStop(0, 'rgba(0, 51, 0, 1)');        // Hijau sangat tua
+gradientStrokeGreen8.addColorStop(1, 'rgba(0, 38, 0, 1)');        // Hijau kehitaman
+var gradientLegendGreen8 = 'rgba(0, 51, 0, 1)';
 
-// Brown Gradient
-var gradientStrokeBrown = graphGradient.createLinearGradient(0, 0, 0, 200);
-gradientStrokeBrown.addColorStop(0, 'rgba(139, 69, 19, 1)');
-gradientStrokeBrown.addColorStop(1, 'rgba(210, 105, 30, 1)');
-var gradientLegendBrown = 'rgba(139, 69, 19, 1)';
+// Gradient Kuning (5 warna)
+var gradientStrokeYellow1 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeYellow1.addColorStop(0, 'rgba(255, 255, 128, 1)');  // Kuning terang
+gradientStrokeYellow1.addColorStop(1, 'rgba(255, 255, 64, 1)');   // Kuning lebih terang
+var gradientLegendYellow1 = 'rgba(255, 255, 128, 1)';
 
-// Cyan Gradient
-var gradientStrokeCyan = graphGradient.createLinearGradient(0, 0, 0, 220);
-gradientStrokeCyan.addColorStop(0, 'rgba(0, 255, 255, 1)');
-gradientStrokeCyan.addColorStop(1, 'rgba(0, 206, 209, 1)');
-var gradientLegendCyan = 'rgba(0, 255, 255, 1)';
+var gradientStrokeYellow2 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeYellow2.addColorStop(0, 'rgba(255, 255, 0, 1)');    // Kuning standar
+gradientStrokeYellow2.addColorStop(1, 'rgba(255, 230, 0, 1)');    // Kuning hangat
+var gradientLegendYellow2 = 'rgba(255, 255, 0, 1)';
 
-// Lime Gradient
-var gradientStrokeLime = graphGradient.createLinearGradient(0, 0, 0, 190);
-gradientStrokeLime.addColorStop(0, 'rgba(50, 205, 50, 1)');
-gradientStrokeLime.addColorStop(1, 'rgba(124, 252, 0, 1)');
-var gradientLegendLime = 'rgba(50, 205, 50, 1)';
+var gradientStrokeYellow3 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeYellow3.addColorStop(0, 'rgba(255, 204, 0, 1)');    // Kuning emas
+gradientStrokeYellow3.addColorStop(1, 'rgba(255, 191, 0, 1)');    // Kuning pekat
+var gradientLegendYellow3 = 'rgba(255, 204, 0, 1)';
 
-// Indigo Gradient
-var gradientStrokeIndigo = graphGradient.createLinearGradient(0, 0, 0, 130);
-gradientStrokeIndigo.addColorStop(0, 'rgba(75, 0, 130, 1)');
-gradientStrokeIndigo.addColorStop(1, 'rgba(138, 43, 226, 1)');
-var gradientLegendIndigo = 'rgba(75, 0, 130, 1)';
+var gradientStrokeYellow4 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeYellow4.addColorStop(0, 'rgba(255, 179, 0, 1)');    // Kuning oranye
+gradientStrokeYellow4.addColorStop(1, 'rgba(255, 153, 0, 1)');    // Kuning sunset
+var gradientLegendYellow4 = 'rgba(255, 179, 0, 1)';
 
-// Silver Gradient
-var gradientStrokeSilver = graphGradient.createLinearGradient(0, 0, 0, 240);
-gradientStrokeSilver.addColorStop(0, 'rgba(192, 192, 192, 1)');
-gradientStrokeSilver.addColorStop(1, 'rgba(169, 169, 169, 1)');
-var gradientLegendSilver = 'rgba(192, 192, 192, 1)';
+var gradientStrokeYellow5 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeYellow5.addColorStop(0, 'rgba(255, 140, 0, 1)');    // Oranye kekuningan
+gradientStrokeYellow5.addColorStop(1, 'rgba(255, 128, 0, 1)');    // Oranye lembut
+var gradientLegendYellow5 = 'rgba(255, 140, 0, 1)';
 
-// Gold Gradient
-var gradientStrokeGold = graphGradient.createLinearGradient(0, 0, 0, 250);
-gradientStrokeGold.addColorStop(0, 'rgba(255, 215, 0, 1)');
-gradientStrokeGold.addColorStop(1, 'rgba(218, 165, 32, 1)');
-var gradientLegendGold = 'rgba(255, 215, 0, 1)';
+// Gradient Merah (3 warna)
+var gradientStrokeRed1 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeRed1.addColorStop(0, 'rgba(255, 102, 102, 1)');  // Merah muda terang
+gradientStrokeRed1.addColorStop(1, 'rgba(255, 51, 51, 1)');    // Merah muda
+var gradientLegendRed1 = 'rgba(255, 102, 102, 1)';
 
-// Magenta Gradient
-var gradientStrokeMagenta = graphGradient.createLinearGradient(0, 0, 0, 270);
-gradientStrokeMagenta.addColorStop(0, 'rgba(255, 0, 255, 1)');
-gradientStrokeMagenta.addColorStop(1, 'rgba(199, 21, 133, 1)');
-var gradientLegendMagenta = 'rgba(255, 0, 255, 1)';
+var gradientStrokeRed2 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeRed2.addColorStop(0, 'rgba(255, 0, 0, 1)');      // Merah standar
+gradientStrokeRed2.addColorStop(1, 'rgba(204, 0, 0, 1)');      // Merah lebih pekat
+var gradientLegendRed2 = 'rgba(255, 0, 0, 1)';
 
-// New Gradient: Turquoise Gradient
-var gradientStrokeTurquoise = graphGradient.createLinearGradient(0, 0, 0, 180);
-gradientStrokeTurquoise.addColorStop(0, 'rgba(64, 224, 208, 1)');
-gradientStrokeTurquoise.addColorStop(1, 'rgba(72, 209, 204, 1)');
-var gradientLegendTurquoise = 'rgba(64, 224, 208, 1)';
+var gradientStrokeRed3 = graphGradient1.createLinearGradient(0, 0, 0, 300);
+gradientStrokeRed3.addColorStop(0, 'rgba(153, 0, 0, 1)');      // Merah tua
+gradientStrokeRed3.addColorStop(1, 'rgba(128, 0, 0, 1)');      // Merah burgundy
+var gradientLegendRed3 = 'rgba(153, 0, 0, 1)';
+
     
 
     // const bgColor1 = ["rgba(54, 215, 232, 1)"];
@@ -233,61 +222,61 @@ var gradientLegendTurquoise = 'rgba(64, 224, 208, 1)';
       data: {
         labels: rentalCategory.map(category => category.category_name),
         datasets: [{
-          data: rentalCategory.map(category => category.percentage),
-          backgroundColor: [gradientStrokeBlue, gradientStrokeGreen, gradientStrokeRed, gradientStrokePink, gradientStrokePurple, gradientStrokeOrange, gradientStrokeYellow, gradientStrokeBrown, gradientStrokeTeal, gradientStrokeCyan, gradientStrokeLime, gradientStrokeIndigo,gradientStrokeSilver, gradientStrokeGold, gradientStrokeMagenta, gradientStrokeTurquoise],
+          data: rentalCategory.map(category => category.rental_count),
+          backgroundColor: [gradientStrokeGreen8,gradientStrokeGreen7,gradientStrokeGreen6,gradientStrokeGreen5,gradientStrokeGreen4,gradientStrokeGreen3,gradientStrokeGreen2,gradientStrokeGreen1,gradientStrokeYellow1,gradientStrokeYellow2,gradientStrokeYellow3,gradientStrokeYellow4,gradientStrokeYellow5,gradientStrokeRed1,gradientStrokeRed2,gradientStrokeRed3 ],
           hoverBackgroundColor: [
-            gradientStrokeBlue,
-            gradientStrokeGreen,
-            gradientStrokeRed,
-            gradientStrokePink, 
-            gradientStrokePurple, 
-            gradientStrokeOrange, 
-            gradientStrokeYellow,
-            gradientStrokeBrown, 
-            gradientStrokeTeal, 
-            gradientStrokeCyan, 
-            gradientStrokeLime, 
-            gradientStrokeIndigo,
-            gradientStrokeSilver, 
-            gradientStrokeGold, 
-            gradientStrokeMagenta, 
-            gradientStrokeTurquoise
+            gradientStrokeGreen8,
+            gradientStrokeGreen7,
+            gradientStrokeGreen6,
+            gradientStrokeGreen5,
+            gradientStrokeGreen4,
+            gradientStrokeGreen3,
+            gradientStrokeGreen2,
+            gradientStrokeGreen1,
+            gradientStrokeYellow1,
+            gradientStrokeYellow2,
+            gradientStrokeYellow3,
+            gradientStrokeYellow4,
+            gradientStrokeYellow5,
+            gradientStrokeRed1,
+            gradientStrokeRed2,
+            gradientStrokeRed3 
           ],
           borderColor: [
-            gradientStrokeBlue,
-            gradientStrokeGreen,
-            gradientStrokeRed,
-            gradientStrokePink, 
-            gradientStrokePurple, 
-            gradientStrokeOrange, 
-            gradientStrokeYellow,
-            gradientStrokeBrown, 
-            gradientStrokeTeal, 
-            gradientStrokeCyan, 
-            gradientStrokeLime, 
-            gradientStrokeIndigo,
-            gradientStrokeSilver, 
-            gradientStrokeGold, 
-            gradientStrokeMagenta, 
-            gradientStrokeTurquoise
+            gradientStrokeGreen8,
+            gradientStrokeGreen7,
+            gradientStrokeGreen6,
+            gradientStrokeGreen5,
+            gradientStrokeGreen4,
+            gradientStrokeGreen3,
+            gradientStrokeGreen2,
+            gradientStrokeGreen1,
+            gradientStrokeYellow1,
+            gradientStrokeYellow2,
+            gradientStrokeYellow3,
+            gradientStrokeYellow4,
+            gradientStrokeYellow5,
+            gradientStrokeRed1,
+            gradientStrokeRed2,
+            gradientStrokeRed3 
           ],
           legendColor: [
-            gradientLegendBlue,
-            gradientLegendGreen,
-            gradientLegendRed,
-            gradientLegendPink,
-            gradientLegendPurple, 
-            gradientLegendOrange,
-            gradientLegendYellow,
-            gradientLegendBrown, 
-            gradientLegendTeal, 
-            gradientLegendCyan, 
-            gradientLegendLime, 
-            gradientLegendIndigo,
-            gradientLegendSilver, 
-            gradientLegendGold, 
-            gradientLegendMagenta, 
-            gradientLegendTurquoise
+            gradientLegendGreen8,
+            gradientLegendGreen7,
+            gradientLegendGreen6,
+            gradientLegendGreen5,
+            gradientLegendGreen4,
+            gradientLegendGreen3,
+            gradientLegendGreen2,
+            gradientLegendGreen1,
+            gradientLegendYellow1,
+            gradientLegendYellow2,
+            gradientLegendYellow3,
+            gradientLegendYellow4,
+            gradientLegendYellow5,
+            gradientLegendRed1,
+            gradientLegendRed2,
+            gradientLegendRed3 
           ]
         }]
       },

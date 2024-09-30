@@ -31,6 +31,7 @@ class HomeController extends Controller
                 DB::raw('ROUND((COUNT(r.rental_id) * 100.0 / (SELECT COUNT(*) FROM rental)), 2) as percentage')
             )
             ->groupBy('c.name')
+            ->orderBy('rental_count', 'desc')
             ->get();
         
         // Menjalankan query untuk mengambil pembayaran berdasarkan store dan bulan
